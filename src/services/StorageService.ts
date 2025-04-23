@@ -26,14 +26,31 @@ export class StorageService {
         });
     }
 
-    // Supprimer une Kapture
-    static async deleteKapture(kaptureId: Kapture): Promise<void> {
+    // Mettre à jour une Kapture
+    static async updateKapture(updatedKapture: Kapture): Promise<void> {
         const kaptures = await this.getKaptures();
-        const updatedKaptures = kaptures.filter(k => k.id !== kaptureId.id);
+        const kaptureToUpdate = kaptures.find(k => k.id === updatedKapture.id)
+
+        if(!kaptureToUpdate) {
+            throw new Error('Kapture non trouvée');
+        }
+
+        Object.assign(kaptureToUpdate, updatedKapture);
+
+        await Preferences.set({
+            key: KAPTURES_KEY,
+            value: JSON.stringify(kaptures)
+        });
+    }
+
+    // Supprimer une Kapture
+    static async deleteKapture(kaptureId: string): Promise<void> {
+        const kaptures = await this.getKaptures();
+        const updatedKaptures = kaptures.filter(k => k.id !== kaptureId);
         await Preferences.set({
             key: KAPTURES_KEY,
             value: JSON.stringify(updatedKaptures)
-        })
+        });
     }
 
 }    

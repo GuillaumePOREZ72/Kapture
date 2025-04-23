@@ -1,11 +1,11 @@
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Kapture } from '../models/Kapture';
 import { StorageService } from './StorageService';
+import { v4 as uuidv4 } from 'uuid';
 
 export class CameraService {
     static async capturePhoto(): Promise<Kapture | null> {
         try {
-            // Capture la photo
             const image = await Camera.getPhoto({
                 quality: 90,
                 allowEditing: false,
@@ -17,21 +17,18 @@ export class CameraService {
                 return null;
             }
 
-            // Crée une nouvelle Kapture
             const newKapture: Kapture = {
-                id: Date.now().toString(),
+                id: uuidv4(),
                 imagePath: image.webPath,
                 caption: '',
                 timestamp: new Date()
             };
 
-            // Sauvegarde dans le stockage
             await StorageService.saveKapture(newKapture);
-
+            
             return newKapture;
         } catch (error) {
-            console.error('Erreur lors de la capture:', error);
-            return null;
+            throw new Error(`Erreur lors de la capture: ${error}`);
         }
     }
 }
