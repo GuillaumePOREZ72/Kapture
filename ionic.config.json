@@ -1,0 +1,7 @@
+{
+  "name": "Kapture",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
