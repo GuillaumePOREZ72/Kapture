@@ -1,0 +1,34 @@
+#map {
+  height: 100%;
+  width: 100%;
+  background: #f0f0f0;
+  z-index: 1;
+  position: absolute;
+}
+
+/* Assurez-vous que le conteneur parent a aussi une hauteur */
+ion-content {
+  height: 100%;
+}
+
+/* Fix pour les contrôles de zoom */
+.leaflet-control-container .leaflet-top,
+.leaflet-control-container .leaflet-bottom {
+  z-index: 999 !important; /* Force un z-index élevé */
+}
+
+.leaflet-control-zoom {
+  margin-top: 60px !important; /* Ajoute de l'espace en haut pour éviter le header */
+  margin-left: 12px !important; /* Ajoute un peu de marge à gauche */
+}
+
+/* Fix pour les tuiles */
+.leaflet-tile {
+  visibility: visible !important;
+}
+
+/* Fix pour le conteneur */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}

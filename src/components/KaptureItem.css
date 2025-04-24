@@ -2,3 +2,20 @@
     color: #999;
     font-style: italic;
 }
+
+.delete-button {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    margin: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+
+}
+ion-card {
+    position: relative;
+}
+
+ion-card-content {
+    padding-bottom: 48px;
+}

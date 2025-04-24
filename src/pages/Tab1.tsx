@@ -30,6 +30,16 @@ const Tab1: React.FC = () => {
     }
   };
 
+  const handleDelete = (kaptureId: string) => {
+    setKaptures(prevKaptures => prevKaptures.filter(k => k.id !== kaptureId)),
+    presentToast({
+      message: 'Photo supprimée avec succès',
+      duration: 2000,
+      position: 'top',
+      color: 'success'
+    })
+  }
+
   const handleCapture = async () => {
     try {
       const result = await CameraService.capturePhoto();
@@ -68,7 +78,11 @@ const Tab1: React.FC = () => {
         </IonHeader>
         <div className='gallery-container'>
           {kaptures.map(kapture => (
-            <KaptureItem key={kapture.id} kapture={kapture} />
+            <KaptureItem 
+                key={kapture.id} 
+                kapture={kapture} 
+                onDelete={handleDelete}
+                />
           ))}
         </div>
         <IonFab vertical='bottom' horizontal='center' slot='fixed'>
@@ -82,3 +96,5 @@ const Tab1: React.FC = () => {
 };
 
 export default Tab1;
+
+

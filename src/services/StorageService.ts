@@ -18,12 +18,18 @@ export class StorageService {
 
     // Sauvegarder une nouvelle Kapture
     static async saveKapture(kapture: Kapture): Promise<void> {
-        const kaptures = await this.getKaptures();
-        kaptures.push(kapture);
-        await Preferences.set({
-            key: KAPTURES_KEY,
-            value: JSON.stringify(kaptures)
-        });
+        try {
+            const kaptures = await this.getKaptures();
+            console.log('Sauvegarde de la Kapture avec location:', kapture.location); 
+            kaptures.push(kapture);
+            await Preferences.set({
+                key: KAPTURES_KEY,
+                value: JSON.stringify(kaptures)
+            });
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde:', error);
+            throw error;
+        }
     }
 
     // Mettre à jour une Kapture

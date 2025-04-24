@@ -1,4 +1,5 @@
-import { IonButton, IonCard, IonCardContent, IonImg, IonInput } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonIcon, IonImg, IonInput } from '@ionic/react';
+import { trash } from 'ionicons/icons'
 import { Kapture } from '../models/Kapture';
 import { useState } from 'react';
 import { StorageService } from '../services/StorageService';
@@ -6,9 +7,10 @@ import './KaptureItem.css';
 
 interface KaptureItemProps {
   kapture: Kapture;
+  onDelete: (kaptureId: string) => void;
 }
 
-const KaptureItem: React.FC<KaptureItemProps> = ({ kapture }) => {
+const KaptureItem: React.FC<KaptureItemProps> = ({ kapture, onDelete }) => {
   const [caption, setCaption] = useState(kapture.caption);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -19,6 +21,7 @@ const KaptureItem: React.FC<KaptureItemProps> = ({ kapture }) => {
       setIsEditing(false);
     } catch (error) {
       console.error('Erreur lors de la sauvegarde de la légende:', error);
+      throw error
     }
   }
 
@@ -26,6 +29,16 @@ const KaptureItem: React.FC<KaptureItemProps> = ({ kapture }) => {
     setCaption(kapture.caption);
     setIsEditing(false);
   }
+
+  const handleDelete = async () => {
+    try {
+      await StorageService.deleteKapture(kapture.id);
+      onDelete(kapture.id);
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      throw error
+    }
+  };
 
   return (
     <IonCard>
@@ -54,6 +67,14 @@ const KaptureItem: React.FC<KaptureItemProps> = ({ kapture }) => {
             {caption ? <p>{caption}</p> : <p className='add-caption'>Ajouter une légende...</p>}
           </div>
         )}
+        <IonButton
+            fill="clear"
+            color="danger"
+            onClick={handleDelete}
+            className="delete-button"
+          >
+          <IonIcon icon={trash} />
+        </IonButton>
       </IonCardContent>
     </IonCard>
   );
